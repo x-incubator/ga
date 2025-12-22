@@ -1,7 +1,7 @@
 {
   "name": "ga",
   "version": "1.0.0",
-  "description": "A toy programming language in davanagari script",
+  "description": "A toy programming language",
   "main": "src/index.js",
   "scripts": {
     "prettier:check": "prettier --check \"./**/*.{js,ts,json}\"",
@@ -18,7 +18,7 @@
     "nepali-programming-language",
     "programming-language"
   ],
-  "author": "Basanta Rai (@bvsvntv)",
+  "author": "Basanta Rai",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/x-incubator/ga/issues"
