@@ -1,4 +1,4 @@
-import { Token, TokenKind } from './token.js';
+import { keywords, Token, TokenKind } from './token.js';
 
 export class Lexer {
   private source: string;
@@ -93,11 +93,8 @@ export class Lexer {
         break;
       default:
         if (this.isDevnagariChar(char)) {
-          if (this.isDevanagariDigit(char)) {
-            this.createToken(TokenKind.Number);
-          } else {
-            // TODO: Identifier token
-          }
+          if (this.isDevanagariDigit(char)) this.createToken(TokenKind.Number);
+          else this.isDevanagariIdentifier();
         }
         break;
     }
@@ -133,6 +130,21 @@ export class Lexer {
   }
 
   /**
+   * Peek next character
+   */
+  private peek(): string {
+    if (this.isAtEnd()) return '\0';
+    return this.source.charAt(this.currentPosition);
+  }
+
+  /**
+   * Get next character
+   */
+  private getNextChar(): string {
+    return this.source.charAt(this.currentPosition++);
+  }
+
+  /**
    * Check if the character is devanagari character
    * @param {string} char
    */
@@ -149,5 +161,20 @@ export class Lexer {
    */
   private isDevanagariDigit(char: string): boolean {
     return '\u{0966}' <= char && char <= '\u{096F}';
+  }
+
+  /**
+   * Check if the character sequence is devanagari identifier
+   */
+  private isDevanagariIdentifier(): void {
+    while (this.isDevnagariChar(this.peek())) this.getNextChar();
+    const content = this.source.substring(
+      this.startPosition,
+      this.currentPosition
+    );
+
+    const keywordKind = keywords[content];
+    if (keywordKind) this.createToken(keywordKind);
+    else this.createToken(TokenKind.Identifier);
   }
 }
