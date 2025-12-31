@@ -26,6 +26,10 @@
     "url": "https://github.com/x-incubator/ga/issues"
   },
   "homepage": "https://github.com/x-incubator/ga#readme",
+  "engines": {
+    "node": ">=20.x.x",
+    "npm": ">=10.x.x"
+  },
   "devDependencies": {
     "@types/node": "^25.0.3",
     "prettier": "^3.7.4",
