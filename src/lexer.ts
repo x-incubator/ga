@@ -194,6 +194,9 @@ export class Lexer {
     else this.createToken(TokenKind.Identifier, literal);
   }
 
+  /**
+   * Read string literals
+   */
   private readDevanagariString(): void {
     while (this.peekNextChar() != '"' && !this.isAtEnd()) {
       if (this.peekNextChar() === '\n') this.line++;
