@@ -7,7 +7,8 @@
   "scripts": {
     "prettier:check": "prettier --check \"./**/*.{js,ts,json}\"",
     "prettier:fix": "prettier --write \"./**/*.{js,ts,json}\"",
-    "build": "tsc",
+    "clean": "rm -rf dist",
+    "build": "pnpm run clean && tsc",
     "exec": "node dist/index.js"
   },
   "repository": {
