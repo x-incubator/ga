@@ -6,6 +6,7 @@ export interface Expr {
 
 export interface ExprVisitor<T> {
   visitVariableExpr(expr: VariableExpr): T;
+  visitLiteralExpr(expr: LiteralExpr): T;
 }
 
 export interface Stmt {
@@ -26,6 +27,18 @@ export class VariableExpr implements Expr {
 
   accept<T>(visitor: ExprVisitor<T>): T {
     return visitor.visitVariableExpr(this);
+  }
+}
+
+export class LiteralExpr implements Expr {
+  value: any;
+
+  constructor(value: any) {
+    this.value = value;
+  }
+
+  accept<T>(visitor: ExprVisitor<T>): T {
+    return visitor.visitLiteralExpr(this);
   }
 }
 
