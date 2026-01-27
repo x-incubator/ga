@@ -4,6 +4,9 @@
   "description": "A toy programming language",
   "type": "module",
   "main": "dist/main.js",
+  "bin": {
+    "ga": "./bin/ga.js"
+  },
   "scripts": {
     "prettier:check": "prettier --check \"./**/*.{js,ts,json}\"",
     "prettier:fix": "prettier --write \"./**/*.{js,ts,json}\"",
