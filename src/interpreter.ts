@@ -10,6 +10,8 @@ import type {
 } from './ast.js';
 
 export class Interpreter implements ExprVisitor<any>, StmtVisitor<void> {
+  private environment: Map<string, any> = new Map();
+
   interpret(statements: Stmt[]): void {
     for (const statement of statements) {
       this.execute(statement);
@@ -29,7 +31,9 @@ export class Interpreter implements ExprVisitor<any>, StmtVisitor<void> {
   }
 
   visitVarStmt(stmt: VarStmt): void {
-    // TODO: yet to implement
+    const value =
+      stmt.initializer !== null ? this.evaluate(stmt.initializer) : null;
+    this.environment.set(stmt.name.lexeme, value);
   }
 
   visitLiteralExpr(expr: LiteralExpr): any {
@@ -41,7 +45,11 @@ export class Interpreter implements ExprVisitor<any>, StmtVisitor<void> {
   }
 
   visitVariableExpr(expr: VariableExpr): any {
-    // TODO: yet to implement
+    const value = this.environment.get(expr.name.lexeme);
+    if (value === undefined) {
+      throw new Error(`Undefined variable '${expr.name.lexeme}'`);
+    }
+    return value;
   }
 
   /*

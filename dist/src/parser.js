@@ -1,4 +1,4 @@
-import { LiteralExpr, PrintStmt, VariableExpr } from './ast.js';
+import { LiteralExpr, PrintStmt, VarStmt, VariableExpr } from './ast.js';
 import { TokenKind } from './token.js';
 export class Parser {
     tokens;
@@ -18,6 +18,9 @@ export class Parser {
         if (this.match(TokenKind.Print)) {
             return this.parsePrintStmt();
         }
+        if (this.match(TokenKind.Let)) {
+            return this.parseVarStmt();
+        }
         throw this.error(this.peek(), 'Expression expected.');
     }
     parsePrintStmt() {
@@ -25,6 +28,14 @@ export class Parser {
         const expr = this.parseExpression();
         this.consume(TokenKind.CloseParen, "Expect ')' after expression");
         return new PrintStmt(expr);
+    }
+    parseVarStmt() {
+        const name = this.consume(TokenKind.Identifier, "Expect variable name after 'मानौ'");
+        let initializer = null;
+        if (this.match(TokenKind.Equal)) {
+            initializer = this.parseExpression();
+        }
+        return new VarStmt(name, initializer);
     }
     parseExpression() {
         return this.parsePrimary();

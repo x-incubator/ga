@@ -1,4 +1,5 @@
 export class Interpreter {
+    environment = new Map();
     interpret(statements) {
         for (const statement of statements) {
             this.execute(statement);
@@ -15,7 +16,8 @@ export class Interpreter {
         console.log(value);
     }
     visitVarStmt(stmt) {
-        // TODO: yet to implement
+        const value = stmt.initializer !== null ? this.evaluate(stmt.initializer) : null;
+        this.environment.set(stmt.name.lexeme, value);
     }
     visitLiteralExpr(expr) {
         if (typeof expr.value === 'string' && expr.value.startsWith('"')) {
@@ -24,7 +26,11 @@ export class Interpreter {
         return expr.value;
     }
     visitVariableExpr(expr) {
-        // TODO: yet to implement
+        const value = this.environment.get(expr.name.lexeme);
+        if (value === undefined) {
+            throw new Error(`Undefined variable '${expr.name.lexeme}'`);
+        }
+        return value;
     }
     /*
      * Evaluate an expression

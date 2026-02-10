@@ -1,6 +1,7 @@
 import {
   LiteralExpr,
   PrintStmt,
+  VarStmt,
   VariableExpr,
   type Expr,
   type Stmt
@@ -30,6 +31,10 @@ export class Parser {
       return this.parsePrintStmt();
     }
 
+    if (this.match(TokenKind.Let)) {
+      return this.parseVarStmt();
+    }
+
     throw this.error(this.peek(), 'Expression expected.');
   }
 
@@ -38,6 +43,20 @@ export class Parser {
     const expr = this.parseExpression();
     this.consume(TokenKind.CloseParen, "Expect ')' after expression");
     return new PrintStmt(expr);
+  }
+
+  private parseVarStmt(): VarStmt {
+    const name = this.consume(
+      TokenKind.Identifier,
+      "Expect variable name after 'मानौ'"
+    );
+
+    let initializer: Expr | null = null;
+    if (this.match(TokenKind.Equal)) {
+      initializer = this.parseExpression();
+    }
+
+    return new VarStmt(name, initializer);
   }
 
   private parseExpression(): Expr {
