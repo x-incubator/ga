@@ -106,7 +106,7 @@ describe('Lexer', () => {
       new Token(TokenKind.Let, 'मानौ', 1),
       new Token(TokenKind.Identifier, 'सन्देश', 1),
       new Token(TokenKind.Equal, '=', 1),
-      new Token(TokenKind.String, '"Hello 123!"', 1),
+      new Token(TokenKind.String, '"Hello World. 123!"', 1),
       new Token(TokenKind.Eof, '', 1)
     ];
 
