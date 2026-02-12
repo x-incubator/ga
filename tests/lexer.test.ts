@@ -85,4 +85,32 @@ describe('Lexer', () => {
     assert.equal(actual.length, expected.length);
     assert.deepEqual(actual, expected);
   });
+
+  test('reject non-devanagari characters outside string literals', () => {
+    const source = `मानौ x = ५`;
+
+    const lexer = new Lexer(source);
+
+    assert.throws(() => {
+      lexer.readTokens();
+    }, /Invalid character 'x' at line 1/);
+  });
+
+  test('allow non-devanagari characters inside string literals', () => {
+    const source = `मानौ सन्देश = "Hello World. 123!"`;
+
+    const lexer = new Lexer(source);
+    const actual = lexer.readTokens();
+
+    const expected = [
+      new Token(TokenKind.Let, 'मानौ', 1),
+      new Token(TokenKind.Identifier, 'सन्देश', 1),
+      new Token(TokenKind.Equal, '=', 1),
+      new Token(TokenKind.String, '"Hello 123!"', 1),
+      new Token(TokenKind.Eof, '', 1)
+    ];
+
+    assert.equal(actual.length, expected.length);
+    assert.deepEqual(actual, expected);
+  });
 });

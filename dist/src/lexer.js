@@ -92,6 +92,11 @@ export class Lexer {
                     else
                         this.readDevanagariIdentifier();
                 }
+                else if (!this.isWhitespace(char)) {
+                    // Report invalid character
+                    throw new Error(`Invalid character '${char}' at line ${this.line}. ` +
+                        `Only Devanagari characters, numbers, special characters, and whitespace are allowed.`);
+                }
                 break;
         }
     }
@@ -148,6 +153,13 @@ export class Lexer {
      */
     isDevanagariDigit(char) {
         return '\u{0966}' <= char && char <= '\u{096F}';
+    }
+    /**
+     * Check if the character is whitespace
+     * @param {string} char
+     */
+    isWhitespace(char) {
+        return char === ' ' || char === '\r' || char === '\t' || char === '\n';
     }
     /**
      * Read devanagari character sequence as number

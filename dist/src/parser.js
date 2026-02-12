@@ -1,4 +1,4 @@
-import { BlockStmt, CallExpr, ExpressionStmt, FunctionStmt, LiteralExpr, PrintStmt, VarStmt, VariableExpr } from './ast.js';
+import { CallExpr, ExpressionStmt, FunctionStmt, LiteralExpr, PrintStmt, VarStmt, VariableExpr } from './ast.js';
 import { TokenKind } from './token.js';
 export class Parser {
     tokens;
@@ -10,6 +10,10 @@ export class Parser {
     parse() {
         const stmts = [];
         while (!this.isAtEnd()) {
+            if (this.check(TokenKind.Illegal)) {
+                const token = this.peek();
+                throw this.error(token, `Invalid character '${token.lexeme}'`);
+            }
             stmts.push(this.parseStmt());
         }
         return stmts;

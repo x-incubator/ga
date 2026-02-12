@@ -1,5 +1,4 @@
 import {
-  BlockStmt,
   CallExpr,
   ExpressionStmt,
   FunctionStmt,
@@ -24,6 +23,10 @@ export class Parser {
   parse(): Stmt[] {
     const stmts: Stmt[] = [];
     while (!this.isAtEnd()) {
+      if (this.check(TokenKind.Illegal)) {
+        const token = this.peek();
+        throw this.error(token, `Invalid character '${token.lexeme}'`);
+      }
       stmts.push(this.parseStmt());
     }
 
